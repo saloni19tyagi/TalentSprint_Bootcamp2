@@ -1,0 +1,27 @@
+// LeetCode Problem
+//Longest Substring Without Repeating Characters
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        map<char, int>lastOccurences ;
+        int maxCount = 0 , currCount = 0 ;
+        
+        for(int i = 0 ; i < s.size() ; i++) {
+            if(lastOccurences.find(s[i]) == lastOccurences.end()) {
+                currCount++ ;
+            }
+            else {
+                int lastOccurenceIndex = lastOccurences.find(s[i])->second ;
+                if(lastOccurenceIndex >= i - currCount)
+                    currCount = i - lastOccurenceIndex ;
+                else {
+                    currCount++ ;
+                }
+            }
+            lastOccurences[s[i]] = i ;
+            maxCount = max(currCount, maxCount) ;
+        }
+        return maxCount ;
+    }
+};
