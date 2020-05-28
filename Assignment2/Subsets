@@ -1,0 +1,24 @@
+Leetcode Problem
+Subsets
+
+
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>>powerSet ;
+        int sz = nums.size() ;
+        int power = pow(2, sz) ;
+        
+        for(int i = 0 ; i <= power-1 ; i++) {
+            bitset<32>binary(i) ;
+            vector<int>sets ;
+            for(int j = sz-1 , k = 0 ; j >= 0 ; j--, k++) {
+                if(binary[k] == 1) {
+                    sets.push_back(nums[j]) ;
+                }
+            }
+            powerSet.push_back(sets) ;
+        }
+        return powerSet ;
+    }
+};
