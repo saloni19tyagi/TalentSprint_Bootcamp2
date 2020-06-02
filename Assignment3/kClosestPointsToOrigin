@@ -1,0 +1,27 @@
+// K Closest Point to Origin
+// LeetCode Problem
+// Author : Saloni
+
+class Solution {
+public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int K) {
+        vector<vector<int>> result ;
+        vector<pair<double, int>>dis;
+        
+        for(int i = 0 ; i < points.size() ; i++) {
+            int x = points[i][0] , y = points[i][1] ;
+            double distance = sqrt(((x*x) + (y*y))) ;
+            dis.push_back(make_pair(distance , i)) ;
+        }
+        
+        sort(dis.begin(), dis.end());
+        for(int i = 0 ; i < K ; i++) {
+            vector<int>temp ;
+            temp.push_back(points[dis[i].second][0]) ;
+            temp.push_back(points[dis[i].second][1]) ;
+            result.push_back(temp) ;
+        }
+        
+        return result ;
+    }
+};

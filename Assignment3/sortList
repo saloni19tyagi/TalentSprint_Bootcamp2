@@ -1,0 +1,109 @@
+// Sort a LinkedList
+// Leetcode Problem
+// Author : Saloni
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    
+    pair<ListNode*, ListNode*> split(ListNode* head) {
+        
+        pair<ListNode*, ListNode*>newHead ;
+        newHead.first = NULL , newHead.second = NULL ;
+        if(head == NULL || head->next == NULL) {
+            return newHead ;
+        }
+        newHead.first = head ;
+        newHead.second = head->next ;
+        
+        ListNode* fastptr = head , *slowptr = head ;
+        
+        while(fastptr->next != NULL && fastptr->next->next != NULL) {
+            slowptr = slowptr->next ; ;
+            fastptr = fastptr->next->next ;
+        }
+        newHead.second = slowptr->next ;
+        slowptr->next = NULL ;
+        return newHead ;
+        
+    }
+    
+    ListNode* merge(ListNode* leftptr , ListNode* rightptr) {
+        if(leftptr == NULL && rightptr == NULL) {
+            return NULL ;
+        }
+        if(leftptr == NULL){
+            return rightptr ;
+        }
+        if(rightptr == NULL) {
+            return leftptr ;
+        }
+        
+        ListNode* mergedHead = NULL , *ptr = NULL ;
+        
+        
+        if(leftptr->val >= rightptr->val) {
+            mergedHead = rightptr ;
+            rightptr = rightptr->next ;
+        }
+        else {
+            mergedHead = leftptr ;
+            leftptr = leftptr->next ;
+        }
+        
+        ptr = mergedHead ;
+        
+        while(leftptr != NULL && rightptr != NULL) {
+            int leftval = leftptr->val ;
+            int rightval = rightptr->val ;
+            if(leftval >= rightval) {
+                ptr->next = rightptr ;
+                rightptr = rightptr->next ;
+            }
+            else {
+                ptr->next = leftptr ;
+                leftptr = leftptr->next ;
+            }
+            ptr = ptr->next ;
+        }
+        
+        if(leftptr != NULL) {
+            ptr->next = leftptr ;
+        }
+        else if(rightptr != NULL) {
+            ptr->next = rightptr ;
+        }
+        
+        return mergedHead ;
+        
+    }
+    
+    ListNode* helper(ListNode* head) {
+        if(head == NULL)
+            return NULL ;
+        if(head->next == NULL)
+            return head ;
+        
+        pair<ListNode*, ListNode*>newHead = split(head) ;
+        ListNode* leftptr = helper(newHead.first) ;
+        ListNode* rightptr = helper(newHead.second) ;
+        ListNode* mergedHead = merge(leftptr, rightptr) ;
+        return mergedHead ;
+        
+    }
+    
+    ListNode* sortList(ListNode* head) {
+        
+        return helper(head) ;
+        
+    }
+};
